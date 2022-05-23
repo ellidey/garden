@@ -21,7 +21,7 @@ class OperatorRole
             return new Response(view('errors.404'));
         }
 
-        if ($request->user()->role_id != 1 || $request->user()->role_id == 2) {
+        if ($request->user()->role_id != 1 && $request->user()->role_id != 2) {
             return new Response(view('errors.404'));
         }
 

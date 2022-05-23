@@ -61,4 +61,8 @@ class User extends Authenticatable
     public function role_name() {
         return self::ROLES[$this->role_id];
     }
+
+    public function positions() {
+        return $this->hasMany(Position::class);
+    }
 }

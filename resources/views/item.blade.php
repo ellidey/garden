@@ -68,6 +68,36 @@
                                     <p>{{ $item->description }}</p>
                                 </div>
                             </div>
+
+                                <div class="mt-4 text-muted">
+                                    <div>
+                                        <h5 class="fs-13 fw-medium text-muted">Default</h5>
+                                        <form method="POST" action="{{ route('basket.add', $item->id) }}">
+                                            @csrf
+                                            <div class="input-step">
+                                                <button type="button" class="minus">–</button>
+                                                <input name="amount" type="number" class="product-quantity" value="2" min="1" max="100" readonly>
+                                                <button type="button" class="plus">+</button>
+                                            </div>
+
+                                            @if (Auth::user())
+                                             <button type="submit"
+                                                     class="btn btn-secondary waves-effect waves-light"
+                                                     style="margin-bottom: 5px"
+                                             >
+                                                 Добавить в карзину
+                                             </button>
+                                            @else
+                                                <a  class="btn btn-secondary waves-effect waves-light"
+                                                    style="margin-bottom: 5px"
+                                                    href="{{ route('login') }}"
+                                                >
+                                                    Добавить в карзину
+                                                </a>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
                         </div>
                         <!-- end col -->
                     </div>
@@ -82,7 +112,6 @@
     <!-- end row -->
 @endsection
 @section('script')
-    <script src="assets/libs/swiper/swiper.min.js"></script>
-    <script src="assets/js/pages/ecommerce-product-details.init.js"></script>
+    <script src="{{ URL::asset('assets/js/pages/form-input-spin.init.js') }}"></script>
     <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 @endsection

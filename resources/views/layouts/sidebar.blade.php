@@ -52,26 +52,40 @@
                             </ul>
                         </div>
                     </li>
-                @if (Auth::user() && Auth::user()->role_id == 1)
-                    <li class="menu-title"><i class="ri-more-fill"></i> <span >Админ панель</span></li>
+                @if (Auth::user())
+                    @if (Auth::user()->role_id == 1)
+                        <li class="menu-title"><i class="ri-more-fill"></i> <span >Админ панель</span></li>
 
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="{{ route('users.index') }}">
-                            <i class="ri-user-line"></i> <span >Пользователи</span>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('users.index') }}">
+                                <i class="ri-user-line"></i> <span >Пользователи</span>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="{{ route('categories.index') }}">
-                            <i class="ri-filter-2-line"></i> <span>Категории</span>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('categories.index') }}">
+                                <i class="ri-filter-2-line"></i> <span>Категории</span>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link menu-link" href="{{ route('items.index') }}">
-                            <i class="ri-shopping-cart-line"></i> <span>Позиции</span>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('items.index') }}">
+                                <i class="ri-shopping-cart-line"></i> <span>Позиции</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('orders.index') }}">
+                                <i class="ri-shopping-cart-2-fill"></i> <span>Заказы</span>
+                            </a>
+                        </li>
+                    @elseif (Auth::user()->role_id == 2)
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('orders.index') }}">
+                                <i class="ri-shopping-cart-2-fill"></i> <span>Заказы</span>
+                            </a>
+                        </li>
+                    @endif
                 @else
                     <a class="nav-link menu-link" href="{{ route('login') }}">
                         <i class="ri-login-box-line"></i> <span>Авторизация</span>

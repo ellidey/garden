@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
 
@@ -21,4 +22,26 @@ class ShopController extends Controller
             'items' => $items,
         ]);
     }
+
+    public function addBasket(Request $request, $id) {
+        $amount = 1;
+
+        if ($request->amount) {
+            $amount = $request->amount;
+        }
+
+        Position::create([
+            'user_id' => $request->user()->id,
+            'item_id'=> $id,
+            'amount' => $amount
+        ]);
+
+        return back()->withInput();
+    }
+
+    public function removeBasket(Request $request, $id) {
+        Position::where('id', $id)->delete();
+        return back()->withInput();
+    }
+
 }
