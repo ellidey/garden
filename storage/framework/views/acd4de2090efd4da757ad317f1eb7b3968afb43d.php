@@ -66,63 +66,72 @@
 
 
                 <?php if(Auth::user()): ?>
+                    <?php ($positions = Auth::user()->positions); ?>
                     <div class="dropdown topbar-head-dropdown ms-1 header-item">
                         <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                                 id="page-header-cart-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                             <i class='bx bx-shopping-bag fs-22'></i>
                             <span
-                                class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-info">7<span
-                                    class="visually-hidden">unread messages</span></span>
+                                class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-info"><?php echo e(count($positions)); ?><span
+                                    class="visually-hidden">Нечитаемое сообщение</span></span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end p-0"
                              aria-labelledby="page-header-cart-dropdown">
                             <div class="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h6 class="m-0 fs-16 fw-semibold">Моя корзина</h6>
+                                        <h6 class="m-0 fs-16 fw-semibold">Моя карзина</h6>
                                     </div>
                                     <div class="col-auto">
-                                        <span class="badge badge-soft-warning fs-13">7 предметом</span>
+                                        <span class="badge badge-soft-warning fs-13"><?php echo e(count($positions)); ?> предметом</span>
                                     </div>
                                 </div>
                             </div>
                             <div data-simplebar style="max-height: 300px;">
-                                <div class="p-2">
+                                <?php ($summ = 0); ?>
+                                <?php $__currentLoopData = $positions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $position): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php ($summ+=$position->item->cost * $position->amount); ?>
+                                <div class="p-1">
                                     <div class="d-block dropdown-item text-wrap px-3 py-2">
                                         <div class="d-flex align-items-center">
-                                            <img src="<?php echo e(URL::asset('assets/images/products/img-1.png')); ?>"
+                                            <img src="<?php echo e(URL::asset('images/' . $position->item->image)); ?>"
                                                  class="me-3 rounded-circle avatar-sm p-2 bg-light" alt="user-pic">
                                             <div class="flex-1">
                                                 <h6 class="mt-0 mb-1 fs-14">
-                                                    <a href="apps-ecommerce-product-details" class="text-reset">Branded
-                                                        T-Shirts</a>
+                                                    <a href="<?php echo e(route('item', $position->item->id)); ?>" class="text-reset">
+                                                        <?php echo e($position->item->name); ?>
+
+                                                    </a>
                                                 </h6>
                                                 <p class="mb-0 fs-12 text-muted">
-                                                    Количество: <span>10 x 32</span>
+                                                    Количество: <span><?php echo e($position->amount); ?> x <?php echo e($position->item->cost); ?>р</span>
                                                 </p>
                                             </div>
                                             <div class="px-2">
-                                                <h5 class="m-0 fw-normal">320 р</h5>
+                                                <h5 class="m-0 fw-normal"><?php echo e($position->amount * $position->item->cost); ?>р</h5>
                                             </div>
                                             <div class="ps-2">
-                                                <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary"><i
-                                                        class="ri-close-fill fs-16"></i></button>
+                                                <form method="POST" action="<?php echo e(route('basket.remove', $position->id)); ?>">
+                                                    <?php echo csrf_field(); ?>
+                                                    <button type="submit" class="btn btn-icon btn-sm btn-ghost-secondary"><i
+                                                            class="ri-close-fill fs-16"></i></button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                             <div class="p-3 border-bottom-0 border-start-0 border-end-0 border-dashed border d-grid">
                                 <div class="d-flex justify-content-between align-items-center pb-3">
                                     <h5 class="m-0 text-muted">Всего:</h5>
                                     <div class="px-2">
-                                        <h5 class="m-0">1258.58р</h5>
+                                        <h5 class="m-0"><?php echo e($summ); ?>р</h5>
                                     </div>
                                 </div>
 
-                                <a href="apps-ecommerce-checkout" class="btn btn-success text-center">
+                                <a href="<?php echo e(route('orders.create')); ?>" class="btn btn-success text-center">
                                     Заказать
                                 </a>
                             </div>

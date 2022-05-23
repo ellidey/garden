@@ -67,6 +67,24 @@
                                     <p><?php echo e($item->description); ?></p>
                                 </div>
                             </div>
+
+                            <?php if(Auth::user()): ?>
+                                <div class="mt-4 text-muted">
+                                    <div>
+                                        <h5 class="fs-13 fw-medium text-muted">Default</h5>
+                                        <form method="POST" action="<?php echo e(route('basket.add', $item->id)); ?>">
+                                            <?php echo csrf_field(); ?>
+                                            <div class="input-step">
+                                                <button type="button" class="minus">–</button>
+                                                <input name="amount" type="number" class="product-quantity" value="2" min="1" max="100" readonly>
+                                                <button type="button" class="plus">+</button>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-secondary waves-effect waves-light" style="margin-bottom: 5px">Добавить в карзину</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <!-- end col -->
                     </div>
@@ -81,8 +99,7 @@
     <!-- end row -->
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
-    <script src="assets/libs/swiper/swiper.min.js"></script>
-    <script src="assets/js/pages/ecommerce-product-details.init.js"></script>
+    <script src="<?php echo e(URL::asset('assets/js/pages/form-input-spin.init.js')); ?>"></script>
     <script src="<?php echo e(URL::asset('/assets/js/app.min.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
